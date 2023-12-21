@@ -30,6 +30,19 @@ app.get("/test", (req, res) => {
   res.json("test ok");
 });
 
+app.get("/profile", (req, res) => {
+  const { token } = req.cookies;
+  if (token) {
+    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      const { name, email, _id } = await User.findById(userData.id);
+      res.json({ name, email, _id });
+    });
+  } else {
+    res.json(null);
+  }
+});
+
 app.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -68,17 +81,8 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/profile", (req, res) => {
-  const { token } = req.cookies;
-  if (token) {
-    jwt.verify(token, jwtSecret, {}, async (err, userData) => {
-      if (err) throw err;
-      const {name, email, _id} = await User.findById(userData.id);
-      res.json({name, email, _id});
-    });
-  } else {
-    res.json(null);
-  }
+app.post("/logout", async (req, res) => {
+  res.cookie("token", "").json(true);
 });
 
 // SERVER RUN

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import axios from "axios";
 
 const RegisterPage = () => {
@@ -16,9 +16,12 @@ const RegisterPage = () => {
         password,
     });
     alert("Inscription réussite vous pouvez vous connecter !")
+    window.location.href='/login'
     } catch (err) {
       alert("Merci de remplir les conditions !")
     }
+
+    
     
     
   };
