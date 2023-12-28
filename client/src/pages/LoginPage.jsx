@@ -13,7 +13,7 @@ const LoginPage = () => {
     e.preventDefault();
       try {
         const {data} = await axios.post(
-          "/login",
+          "api/auth/login",
           { email, password }
         );
         setUser(data)
