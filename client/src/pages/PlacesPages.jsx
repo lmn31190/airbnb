@@ -15,7 +15,7 @@ const PlacesPages = () => {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
-  const [redirect, setRedirect] = useState('')
+  const [redirectToPlacesList, setRedirectToPlacesList] = useState(false)
 
   const inputHeader = (text) => {
     return <h2 className="text-xl mt-4">{text}</h2>;
@@ -47,12 +47,12 @@ const PlacesPages = () => {
       checkOut,
       maxGuests,
     };
-    const {data} = await axios.post("/places", placeData);
-    setRedirect('/account/places')
+    await axios.post("/places", placeData);
+    setRedirectToPlacesList(true);
   };
 
-  if (redirect) {
-    <Navigate to={redirect} />
+  if (redirectToPlacesList && action !== 'new') {
+    return <Navigate to={"/account/places"} />
   }
 
 
