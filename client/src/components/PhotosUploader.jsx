@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 
-const PhotosUploader = ({addedPhotos, onChange}) => {
-    const [photoLink, setPhotoLink] = useState("");
+const PhotosUploader = ({ addedPhotos, onChange }) => {
+  const [photoLink, setPhotoLink] = useState("");
 
-    const addPhotoByLink = async (e) => {
+  const addPhotoByLink = async (e) => {
     e.preventDefault();
     const { data: filename } = await axios.post("/upload-by-link", {
       link: photoLink,
