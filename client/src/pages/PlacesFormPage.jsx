@@ -16,6 +16,7 @@ const PlacesFormPage = () => {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [maxGuests, setMaxGuests] = useState(1);
+  const [price, setPrice] = useState(100)
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
@@ -34,6 +35,7 @@ const PlacesFormPage = () => {
       setCheckIn(data.checkIn);
       setCheckOut(data.checkOut);
       setMaxGuests(data.maxGuests);
+      setPrice(data.price)
     });
   }, [id]);
 
@@ -69,6 +71,7 @@ const PlacesFormPage = () => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       };
       await axios.put("/places", {
         id,
@@ -87,6 +90,7 @@ const PlacesFormPage = () => {
         checkIn,
         checkOut,
         maxGuests,
+        price,
       };
       await axios.post("/places", placeData);
       setRedirect(true);
@@ -143,7 +147,7 @@ const PlacesFormPage = () => {
           "Arrivé & Départ, invités maximum",
           "Ajouter une heure d'arriver et de départ, n'oubliez pas de garder un moment afin de nettoyer le logement entre deux réservations"
         )}
-        <div className="grid gap-2 sm:grid-cols-3">
+        <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-4">
           <div>
             <h3 className="mt-2 -mb-1">Arrivé</h3>
             <input
@@ -167,6 +171,15 @@ const PlacesFormPage = () => {
             <input
               value={maxGuests}
               onChange={(e) => setMaxGuests(e.target.value)}
+              type="number"
+            />
+          </div>
+          
+          <div>
+            <h3 className="mt-2 -mb-1">Prix par nuit</h3>
+            <input
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
               type="number"
             />
           </div>
