@@ -46,7 +46,7 @@ const PlacesPages = () => {
                   <img className="object-cover" src={`http://localhost:4000/uploads/${place.photos[0]}`} alt="" />
                 )}
               </div>
-              <div className="grow-0 shrink h-32">
+              <div className="grow-0 shrink h-32 overflow-scroll">
                 <h2 className="text-xl">{place.title}</h2>
                 <p className="text-sm mt-2">{place.description}</p>
               </div>
