@@ -61,7 +61,7 @@ const PlacePage = () => {
   }
 
   return (
-    <div className="mt-4 bg-gray-100 -mx-8 px-8 py-8">
+    <div className="mt-4 bg-gray-100 -mx-8 px-8 pt-8">
       <h1 className="text-2xl">{place.title}</h1>
       <a
         className="flex gap-1 my-3 font-semibold underline"
@@ -95,7 +95,8 @@ const PlacePage = () => {
             {place.photos?.[0] && (
               <div>
                 <img
-                  className="aspect-square object-cover"
+                onClick={() => setShowAllPhotos(true)}
+                  className="aspect-square object-cover cursor-pointer"
                   src={`http://localhost:4000/uploads/${place.photos[0]}`}
                   alt=""
                 />
@@ -105,7 +106,8 @@ const PlacePage = () => {
           <div className="grid">
             {place.photos?.[1] && (
               <img
-                className="aspect-square object-cover "
+              onClick={() => setShowAllPhotos(true)}
+                className="aspect-square object-cover cursor-pointer"
                 src={`http://localhost:4000/uploads/${place.photos[1]}`}
                 alt=""
               />
@@ -113,7 +115,8 @@ const PlacePage = () => {
             <div className="overflow-hidden">
               {place.photos?.[2] && (
                 <img
-                  className="relative top-2 aspect-square object-cover"
+                onClick={() => setShowAllPhotos(true)}
+                  className="relative top-2 aspect-square object-cover cursor-pointer"
                   src={`http://localhost:4000/uploads/${place.photos[2]}`}
                   alt=""
                 />
@@ -142,7 +145,7 @@ const PlacePage = () => {
           Voir plus
         </button>
       </div>
-      <div className="mt-8 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
+      <div className="mt-8 mb-4 grid gap-8 grid-cols-1 md:grid-cols-[2fr_1fr]">
         <div>
           <div className="my-4">
             <h2 className="font-semibold text-2xl">Description</h2>
@@ -153,7 +156,15 @@ const PlacePage = () => {
           Voyageurs maximum : {place.maxGuests}
         </div>
         <div>
-          <BookingWidget  place={place} />
+          <BookingWidget place={place} />
+        </div>
+      </div>
+      <div className="bg-white -mx-8 px-8 py-8 border-t">
+        <div>
+          <h2 className="font-semibold text-2xl mt-4">Extra info</h2>
+        </div>
+        <div className="text-sm text-gray-700 leading-5 mb-4 mt-2">
+          {place.extraInfo}
         </div>
       </div>
     </div>
