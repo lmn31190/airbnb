@@ -15,6 +15,7 @@ import "dotenv/config";
 //MODELS
 import Place from "./models/Place.js";
 import User from "./models/User.js";
+import Booking from "./models/Booking.js";
 
 const app = express();
 
@@ -33,6 +34,15 @@ app.use(
 );
 
 mongoose.connect(process.env.MONGO_URL);
+
+const getUserDataFromReq = (req) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
+      if (err) throw err;
+      resolve(userData);
+    });
+  })
+}
 
 const bcryptSalt = bcrypt.genSaltSync(10);
 const jwtSecret = "fgrfgirjfifbfrfurhf";
@@ -125,9 +135,9 @@ app.post("/upload", photosMiddleware.array("photos", 100), (req, res) => {
 
 // PLACES
 
-app.get('/places', async (req, res) => {
-  res.json( await Place.find());
-})
+app.get("/places", async (req, res) => {
+  res.json(await Place.find());
+});
 
 app.get("/user-places", (req, res) => {
   const { token } = req.cookies;
@@ -165,7 +175,7 @@ app.post("/places", async (req, res) => {
       owner: userData.id,
       title,
       address,
-      photos:addedPhotos,
+      photos: addedPhotos,
       description,
       perks,
       extraInfo,
@@ -196,11 +206,11 @@ app.put("/places", async (req, res) => {
 
   jwt.verify(token, jwtSecret, {}, async (err, userData) => {
     const placeDoc = await Place.findById(id);
-    if(userData.id === placeDoc.owner.toString()) {
+    if (userData.id === placeDoc.owner.toString()) {
       placeDoc.set({
         title,
         address,
-        photos:addedPhotos,
+        photos: addedPhotos,
         description,
         perks,
         extraInfo,
@@ -210,9 +220,40 @@ app.put("/places", async (req, res) => {
         price,
       });
       await placeDoc.save();
-      res.json('Updated');
+      res.json("Updated");
     }
   });
+});
+
+// BOOKING
+
+
+
+app.get('/bookings', async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  res.json( await Booking.find({user: userData.id}).populate('place'))
+})
+
+app.post("/bookings", async (req, res) => {
+  const userData = await getUserDataFromReq(req);
+  const { place, checkIn, checkOut, numberOfGuests, name, phone, price } =
+    req.body;
+  Booking.create({
+    place,
+    checkIn,
+    checkOut,
+    numberOfGuests,
+    name,
+    phone,
+    price,
+    user: userData.id,
+  })
+    .then((doc) => {
+      res.json(doc);
+    })
+    .catch((err) => {
+      if (err) throw err;
+    });
 });
 
 // SERVER RUN
